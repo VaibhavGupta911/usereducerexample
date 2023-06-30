@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import { useReducer, useRef } from 'react'
 import './App.css';
 
 function App() {
+
+
+  const calculator = (state, action) => {
+    if (action.type === "buy") return { money: state.money - 10 };
+    if (action.type === "sell") return { money: state.money + 10 };
+
+  }
+  const initialmoney = { money: 100 };
+  const [state, despatch] = useReducer(calculator, initialmoney);
+  const focusRef = useRef(null)
+  const focusFun = () => {
+    focusRef.current.focus();
+  }
+
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Balance: {state.money}</h1>
+      <button onClick={() => despatch({ type: 'buy' })}>BUY VEGITABLE</button>
+      <button onClick={() => despatch({ type: 'sell' })}>SELL DISH</button>
+      <input type='text' ref={focusRef}/>
+      <button onClick={focusFun}>For focus on input field</button>
     </div>
   );
 }
